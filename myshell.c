@@ -25,19 +25,28 @@ int main(int argc, char *argv[])
 	while(ptr != NULL)
 	{
 		//현재 위치와 만들값 확인용
-		char cwd[1024];
-		getcwd(cwd, sizeof(cwd));	
+		char cwd[1024]=".";
+		//getcwd(cwd, sizeof(cwd));	
 		printf("ptr 값 : %s\n", ptr);
 
 		//해당 이름과 권한을 가진 디렉토리 생성 후, 그 위치로 이동
-		mode = umask(0122);
+		mode = umask(0022);
 		mkdir(ptr, 0777);
-		strcat(cwd, "/");
-		strcat(cwd, ptr);
-		chdir(cwd);
+		//strcat(cwd, "/");
+		//strcat(cwd, ptr);
+		printf("cwd : %s\n", cwd);
+		switch( chdir(ptr) )
+		{
+			case 0:
+				printf("이동 성공\n");
+				break;
+			case -1:
+				printf("이동 실패\n");
+				break;
+		}
 		//현재 위치 표시
-		getcwd(cwd, sizeof(cwd));
-		printf("cwd 값 : %s\n", cwd);
+		//getcwd(cwd, sizeof(cwd));
+		//printf("cwd 값 : %s\n", cwd);
 
 		//만들 디렉토리 이름 바꾸기
 		ptr = strtok(NULL, "/");
@@ -51,12 +60,16 @@ int main(int argc, char *argv[])
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	open(argv[2], O_CREAT, mode);
 	
+	//파일까지만 형성할시에 종료시키는 부분
 	if(argc == 3)
 		return 0;
+
+	//char *ptext = (char*)malloc(sizeof(argv[3]);
+	//while(ptext != NULL)
+	//{
+	//	
+	//}
 		
 
 	return 0;
 }
-
-
-
